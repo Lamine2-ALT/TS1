@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mathématiques — ENSA Thiès 2022</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{
+    delimiters:[{left:'\\(',right:'\\)',display:false}],
+    throwOnError:false
+  });"></script>
+<style>
+/* ══ RESET ══ */
+*,*::before,*::after{
+  box-sizing:border-box;margin:0;padding:0;
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+:root{
+  --ink:#14100a;--red:#8b2818;--gold:#b5851e;
+  --hi:#f2ece0;--bg:#faf7f0;--muted:#6a5e50;--line:#d6cdb8;
+}
+html{background:#e5dfd4;scroll-behavior:smooth;}
+body{
+  font-family:'EB Garamond',Georgia,serif;
+  font-size:clamp(15px,2.3vw,17px);
+  line-height:1.9;color:var(--ink);background:#fff;
+}
+
+/* ══ TABS ══ */
+.tabs{
+  position:sticky;top:0;z-index:200;
+  display:flex;background:var(--ink);
+  border-bottom:3px solid var(--gold);
+}
+.tab{
+  flex:1;padding:.75rem .4rem;
+  font-family:'Cinzel',serif;
+  font-size:clamp(.6rem,1.8vw,.76rem);
+  letter-spacing:.1em;text-transform:uppercase;
+  color:#9a8e7e;background:none;border:none;cursor:pointer;
+  transition:color .2s;
+}
+.tab.on{color:var(--gold);}
+.tab:hover{color:#d4c4a0;}
+
+/* ══ PAGES ══ */
+.page{display:none;}
+.page.on{display:block;}
+
+/* ══ PAPER ══ */
+.paper{width:100%;max-width:800px;margin:0 auto;background:#fff;}
+@media(min-width:840px){
+  .paper{box-shadow:0 4px 36px rgba(0,0,0,.14);margin:16px auto 52px;}
+  html{padding-bottom:52px;}
+}
+
+/* ══ HEADER ══ */
+.hdr{
+  background:var(--ink)!important;color:#f4efe4!important;
+  padding:clamp(.9rem,3.5vw,1.6rem) clamp(.8rem,4vw,1.5rem);
+  text-align:center;
+}
+.hdr-inst{
+  font-family:'Cinzel',serif;
+  font-size:clamp(.5rem,1.3vw,.65rem);
+  letter-spacing:.12em;text-transform:uppercase;
+  color:#b5851e!important;margin-bottom:.4rem;line-height:1.65;
+}
+.hdr h1{
+  font-family:'Cinzel',serif;
+  font-size:clamp(1.1rem,4.5vw,1.8rem);font-weight:700;
+  color:#f4efe4!important;margin-bottom:.22rem;
+}
+.hdr-meta{
+  font-style:italic;font-size:clamp(.7rem,1.8vw,.85rem);
+  color:#b8b0a0!important;margin-bottom:.65rem;line-height:1.5;
+}
+.pills{display:flex;justify-content:center;gap:.3rem;flex-wrap:wrap;}
+.pill{
+  background:#8b2818!important;color:#fff!important;
+  font-size:clamp(.52rem,1.3vw,.65rem);letter-spacing:.07em;
+  text-transform:uppercase;padding:.16rem .5rem;border-radius:2px;
+}
+
+/* ══ CONTENT ══ */
+.body{padding:clamp(.9rem,4vw,1.6rem) clamp(.8rem,4vw,1.6rem) clamp(1.2rem,4vw,2rem);}
+
+/* ══ EXO ══ */
+.exo{margin-bottom:clamp(1.2rem,4vw,1.8rem);}
+.exo-h{
+  font-family:'Cinzel',serif;
+  font-size:clamp(.74rem,2.1vw,.92rem);font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--ink)!important;
+  border-bottom:2px solid var(--ink);
+  padding-bottom:.28rem;margin-bottom:.75rem;
+  display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;
+}
+.pts{
+  background:#8b2818!important;color:#fff!important;
+  font-size:clamp(.52rem,1.2vw,.63rem);padding:.1rem .4rem;
+  border-radius:2px;font-style:italic;font-weight:400;white-space:nowrap;
+}
+
+/* ══ SECTION ══ */
+.sec{margin-bottom:clamp(.7rem,2.5vw,1.1rem);}
+.sec-h{
+  font-size:clamp(.8rem,2.1vw,.94rem);font-weight:700;
+  color:#8b2818!important;
+  border-left:3px solid #b5851e;
+  padding-left:.48rem;margin-bottom:.45rem;
+}
+
+/* ══ QUESTION LABEL ══ */
+.ql{
+  font-size:clamp(.76rem,1.9vw,.88rem);font-weight:700;
+  color:var(--muted)!important;margin-bottom:.18rem;
+  display:flex;align-items:flex-start;gap:.3rem;
+}
+.ql::before{content:'◆';color:#b5851e!important;font-size:.56rem;margin-top:.24rem;flex-shrink:0;}
+
+/* ══ ÉNONCÉ / DONNÉES ══ */
+.eno{
+  background:#faf7f0!important;
+  border-left:2px solid #d6cdb8!important;
+  padding:.38rem .65rem;margin-bottom:.38rem;
+  font-size:clamp(.78rem,1.9vw,.9rem);
+}
+.data{
+  background:#f2ece0!important;border:1px solid #d6cdb8!important;
+  border-radius:3px;padding:.45rem .75rem;margin-bottom:.65rem;
+  font-style:italic;color:var(--muted)!important;
+  font-size:clamp(.78rem,1.9vw,.9rem);
+}
+
+/* ══ STEP BOX ══
+   Chaque .eq est une ligne indépendante, alignée à gauche.
+   Aucun overflow, aucune coupure possible.
+══ */
+.step{
+  background:#f2ece0!important;
+  border-left:3px solid #b5851e!important;
+  padding:.5rem .8rem;margin:.3rem 0;
+  border-radius:0 3px 3px 0;
+}
+
+/* ══ UNE ÉGALITÉ PAR LIGNE ══
+   .eq = un div par ligne de calcul.
+   font-size réduit légèrement sur mobile pour tenir.
+   white-space:nowrap INTERDIT — on ne coupe pas mais on ne force pas non plus.
+   Chaque équation est assez courte pour tenir sur une ligne.
+══ */
+.eq{
+  display:block;
+  font-size:clamp(13px,2vw,15.5px);
+  line-height:2;
+  /* légère indentation pour les suites de calcul */
+}
+.eq.ind{padding-left:1.4em;}
+
+/* ══ RESULT ══ */
+.res{
+  background:#faf7f0!important;
+  border:1.5px solid #8b2818!important;
+  border-radius:3px;
+  padding:.5rem .8rem;margin:.45rem 0;
+}
+.res .eq{font-size:clamp(13px,2vw,15.5px);}
+
+/* ══ CONCL ══ */
+.concl{
+  background:#14100a!important;color:#f0ebe0!important;
+  border-radius:3px;padding:.55rem .85rem;margin:.42rem 0;
+  font-style:italic;font-size:clamp(.76rem,1.9vw,.87rem);
+}
+
+/* ══ VARIATION TABLE ══ */
+.vt-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.45rem 0;}
+.vt{border-collapse:collapse;font-size:clamp(.72rem,1.8vw,.88rem);min-width:280px;}
+.vt th,.vt td{border:1.5px solid var(--ink)!important;padding:.28rem .62rem;text-align:center;white-space:nowrap;}
+.vt th{background:#f2ece0!important;font-weight:700;}
+
+/* ══ MISC ══ */
+p{margin:.18rem 0 .38rem;}
+.sep{border:none;border-top:1px dashed var(--line);margin:.9rem 0;}
+.ftr{
+  text-align:center;padding:.55rem 1rem .38rem;
+  color:var(--muted)!important;
+  font-size:clamp(.62rem,1.6vw,.73rem);font-style:italic;
+  border-top:1px solid var(--line);margin-top:1rem;
+}
+
+/* ══ PRINT ══ */
+@page{size:A4 portrait;margin:14mm 12mm 16mm 12mm;}
+@media print{
+  html{background:#fff;}body{font-size:10pt;}
+  .tabs{display:none;}
+  .page{display:block!important;}
+  #pg-c{page-break-before:always;}
+  .paper{box-shadow:none;max-width:100%;margin:0;}
+  .step,.res,.concl,.data,.eno,.exo{page-break-inside:avoid;}
+  .exo-h,.sec-h{page-break-after:avoid;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ TABS ══ -->
+<div class="tabs">
+  <button class="tab on" onclick="sw('s',this)">📄 Sujet</button>
+  <button class="tab"    onclick="sw('c',this)">✅ Corrigé</button>
+</div>
+
+<!-- ══════════════════════════════
+     SUJET
+══════════════════════════════ -->
+<div id="pg-s" class="page on"><div class="paper">
+<div class="hdr">
+  <div class="hdr-inst">Ministère de l'Enseignement Supérieur, de la Recherche et de l'Innovation (MESRI)<br>
+  Université IBA DER THIAM (UIDT) de Thiès — École Nationale Supérieure d'Agriculture (ENSA)</div>
+  <h1>Mathématiques</h1>
+  <div class="hdr-meta">Concours d'entrée · Session Normale, Mai 2022 · Durée : 2 heures</div>
+  <div class="pills">
+    <span class="pill">Exercice 1 — 4 pts</span>
+    <span class="pill">Exercice 2 — 6 pts</span>
+    <span class="pill">Problème — 10 pts</span>
+  </div>
+</div>
+<div class="body">
+
+<div class="exo">
+  <div class="exo-h">Exercice 1 <span class="pts">/ 4 points</span></div>
+  <p>Pour prévenir l'extension d'une épidémie virale, on décide de soumettre la population menacée à des tests. Le résultat est positif pour les porteurs du virus, négatif pour les personnes non atteintes, mais il y a des exceptions. Le but est de comparer deux procédures de dépistage : l'une n'utilisant qu'un test, l'autre consistant en deux tests identiques réalisés indépendamment.</p>
+  <p>On choisit un individu X au hasard et on pose :</p>
+  <p>\(V\) : « X est porteur du virus » ; \(\overline{V}\) : « X n'est pas porteur du virus »</p>
+  <p>\(T\) : « le test est positif » ; \(\overline{T}\) : « le test est négatif »</p>
+  <div class="data">\(p(V)=0{,}1\) &nbsp;;&nbsp; \(p(\overline{T}\mid V)=0{,}05\) &nbsp;;&nbsp; \(p(T\mid\overline{V})=0{,}03\)</div>
+
+  <div class="sec">
+    <div class="sec-h">1) Procédure à un seul test</div>
+    <div class="ql">a)</div>
+    <div class="eno">
+      Calculer la probabilité des événements :<br>
+      \(A\) : « X est porteur ET le test est positif »<br>
+      \(B\) : « X n'est pas porteur ET le test est positif »<br>
+      En déduire \(p(T)\) puis \(p(\overline{T})\).
+    </div>
+    <div class="ql">b)</div>
+    <div class="eno">Calculer \(p(V\cap\overline{T})\). En déduire \(p(V\mid\overline{T})\).</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">2) Procédure à deux tests indépendants</div>
+    <p>On considère \(\overline{T}_2\) : « les deux tests appliqués à X sont négatifs ».</p>
+    <div class="ql">a)</div>
+    <div class="eno">Quelle est la probabilité de \(\overline{T}_2\) ?<br>
+    Quelle est la probabilité que les deux tests soient négatifs sachant que X est porteur ?</div>
+    <div class="ql">b)</div>
+    <div class="eno">Déduire \(p(V\cap\overline{T}_2)\) puis \(p(V\mid\overline{T}_2)\).</div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<div class="exo">
+  <div class="exo-h">Exercice 2 <span class="pts">/ 6 points</span></div>
+  <p>Le plan complexe est rapporté à un repère orthonormal \((O,\vec{u},\vec{v})\), unité graphique 2 cm.</p>
+
+  <div class="sec">
+    <div class="sec-h">1) Résolution d'une équation</div>
+    <div class="eno">Résoudre dans \(\mathbb{C}\) : \(\quad 4z^2-(8-6i)\,z+1-5i=0\)</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">2) Étude géométrique</div>
+    <p>On considère \(A\), \(B\), \(C\), \(D\) d'affixes respectives \(\tfrac{1}{2}-\tfrac{1}{2}i\), \(\tfrac{3}{2}-i\), \(i\) et \(1-\tfrac{3}{2}i\).</p>
+    <div class="ql">a)</div><div class="eno">Placer les points \(A\), \(B\), \(C\) et \(D\).</div>
+    <div class="ql">b)</div>
+    <div class="eno">Déterminer le module et un argument de \(\dfrac{z_D-z_A}{z_B-z_A}\). En déduire la nature du triangle \(ABD\).</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">3) Suites complexes</div>
+    <p>On considère les suites \((Z_n)\) et \((a_n)\) définies par :</p>
+    <p>\(z_0=i+2\) &nbsp;;&nbsp; \(z_{n+1}=\bigl(\tfrac{1}{2}+\tfrac{1}{2}i\bigr)z_n+1-i\) &nbsp;;&nbsp; \(a_n=z_n-2\)</p>
+    <div class="eno">Montrer que \((a_n)\) est une suite géométrique dont on déterminera la raison et le premier terme.</div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<div class="exo">
+  <div class="exo-h">Problème <span class="pts">/ 10 points</span></div>
+  <p>Soit \(f\) définie sur \(\mathbb{R}\) par \(f(x)=\dfrac{1+e^x}{1+e^{2x}}\)</p>
+
+  <div class="sec">
+    <div class="sec-h">Partie A</div>
+    <div class="ql">1.</div><div class="eno">Étudier les variations de \(f\) et tracer sa courbe dans un repère orthonormé.</div>
+    <div class="ql">2.</div><div class="eno">Montrer que \(\forall x\in\mathbb{R},\quad 0 < f(x)\leq\dfrac{1+\sqrt{2}}{2}\)</div>
+    <div class="ql">3.</div><div class="eno">Montrer que \(\forall x\in\mathbb{R},\quad(1+e^{2x})f'(x)+(e^{2x}-1)f(x)=-1\)</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">Partie B</div>
+    <p>\(\forall x\in\mathbb{R}\), on pose \(F(x)=\displaystyle\int_0^x\dfrac{1+e^t}{1+e^{2t}}\,dt\)</p>
+    <div class="ql">1.</div>
+    <div class="eno">Établir que \(F(x)=\displaystyle\int_0^x\dfrac{dt}{1+t^2}+\ln\!\left(\dfrac{\sqrt{2}\,e^x}{\sqrt{1+e^{2x}}}\right)\)</div>
+    <div class="ql">2.</div>
+    <div class="eno">Soit \(\phi(x)=\displaystyle\int_0^{\tan x}\!\dfrac{dt}{1+t^2}\), \(x\in\left]-\tfrac{\pi}{2};\tfrac{\pi}{2}\right[\). Montrer que \(\phi(x)=x\).</div>
+    <div class="ql">3.</div>
+    <div class="eno">En déduire que \(\displaystyle I=\int_0^{\frac{\ln 3}{2}}\!f(t)\,dt=\dfrac{\pi}{12}+\dfrac{1}{2}\ln\!\dfrac{3}{2}\). Donner une interprétation géométrique.</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">Partie C</div>
+    <p>On donne \(J=\displaystyle\int_0^{\frac{\ln 3}{2}}\dfrac{1+e^t}{(1+e^{2t})^2}\,dt\)</p>
+    <div class="ql">1.a</div>
+    <div class="eno">Montrer qu'il existe \(a,b\in\mathbb{R}\) tels que \(\dfrac{1}{1+e^{2t}}=a+\dfrac{b\,e^{2t}}{1+e^{2t}}\). En déduire \(\displaystyle\int_0^{\frac{\ln 3}{2}}\dfrac{dt}{1+e^{2t}}\).</div>
+    <div class="ql">1.b</div>
+    <div class="eno">Montrer que \(f'(t)=\dfrac{-1}{1+e^{2t}}-f(t)+\dfrac{2f(t)}{1+e^{2t}}\)</div>
+    <div class="ql">2.</div><div class="eno">Trouver la valeur de \(J\).</div>
+  </div>
+</div>
+
+</div>
+<div class="ftr">Épreuve de Mathématiques — Concours d'entrée ENSA Thiès — Session Normale, Mai 2022</div>
+</div></div>
+
+
+<!-- ══════════════════════════════
+     CORRIGÉ
+══════════════════════════════ -->
+<div id="pg-c" class="page"><div class="paper">
+<div class="hdr">
+  <div class="hdr-inst">ENSA de Thiès — Concours d'entrée — Session Normale, Mai 2022</div>
+  <h1>Corrigé — Mathématiques</h1>
+  <div class="hdr-meta">Corrigé officiel détaillé</div>
+  <div class="pills">
+    <span class="pill">Exercice 1 — 4 pts</span>
+    <span class="pill">Exercice 2 — 6 pts</span>
+    <span class="pill">Problème — 10 pts</span>
+  </div>
+</div>
+<div class="body">
+
+<!-- ══ EX1 ══ -->
+<div class="exo">
+  <div class="exo-h">Exercice 1 — Probabilités <span class="pts">/ 4 points</span></div>
+  <div class="data">
+    <strong>Données :</strong> \(p(V)=0{,}1\) ; \(p(\overline{T}\mid V)=0{,}05\) ; \(p(T\mid\overline{V})=0{,}03\)<br>
+    <strong>On déduit :</strong> \(p(\overline{V})=0{,}9\) ; \(p(T\mid V)=0{,}95\) ; \(p(\overline{T}\mid\overline{V})=0{,}97\)
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">1a — Événements A et B, calcul de T et \(\overline{T}\)</div>
+    <p>Événement \(A = V\cap T\) :</p>
+    <div class="step">
+      <span class="eq">\(p(A) = p(V)\times p(T\mid V)\)</span>
+      <span class="eq ind">\(= 0{,}1\times 0{,}95\)</span>
+      <span class="eq ind">\(= 0{,}095 = \dfrac{19}{200}\)</span>
+    </div>
+    <p>Événement \(B = \overline{V}\cap T\) :</p>
+    <div class="step">
+      <span class="eq">\(p(B) = p(\overline{V})\times p(T\mid\overline{V})\)</span>
+      <span class="eq ind">\(= 0{,}9\times 0{,}03\)</span>
+      <span class="eq ind">\(= 0{,}027 = \dfrac{27}{1000}\)</span>
+    </div>
+    <p>\(A\) et \(B\) forment une partition de \(T\) (car \(V\) et \(\overline{V}\) sont incompatibles et exhaustifs), donc :</p>
+    <div class="step">
+      <span class="eq">\(p(T) = p(A)+p(B)\)</span>
+      <span class="eq ind">\(= 0{,}095+0{,}027\)</span>
+      <span class="eq ind">\(= 0{,}122 = \dfrac{61}{500}\)</span>
+    </div>
+    <div class="step">
+      <span class="eq">\(p(\overline{T}) = 1-p(T) = 1-0{,}122 = 0{,}878 = \dfrac{439}{500}\)</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">1b — Probabilité \(p(V\mid\overline{T})\)</div>
+    <div class="step">
+      <span class="eq">\(p(V\cap\overline{T}) = p(V)\times p(\overline{T}\mid V)\)</span>
+      <span class="eq ind">\(= 0{,}1\times 0{,}05\)</span>
+      <span class="eq ind">\(= 0{,}005 = \dfrac{1}{200}\)</span>
+    </div>
+    <p>Formule de Bayes :</p>
+    <div class="step">
+      <span class="eq">\(p(V\mid\overline{T}) = \dfrac{p(V\cap\overline{T})}{p(\overline{T})}\)</span>
+      <span class="eq ind">\(= \dfrac{0{,}005}{0{,}878}\)</span>
+      <span class="eq ind">\(= \dfrac{5}{878} \approx 0{,}0057\)</span>
+    </div>
+    <div class="res">
+      <span class="eq">\(\boxed{p(V\mid\overline{T}) \approx 0{,}57\%}\)</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">2a — Probabilité de \(\overline{T}_2\)</div>
+    <p>Par indépendance des deux tests :</p>
+    <div class="step">
+      <span class="eq">\(p(\overline{T}_2\mid V) = \bigl[p(\overline{T}\mid V)\bigr]^2 = (0{,}05)^2 = 0{,}0025 = \dfrac{1}{400}\)</span>
+    </div>
+    <div class="step">
+      <span class="eq">\(p(\overline{T}_2\mid\overline{V}) = \bigl[p(\overline{T}\mid\overline{V})\bigr]^2 = (0{,}97)^2 = 0{,}9409\)</span>
+    </div>
+    <p>Formule des probabilités totales (partition \(\{V,\overline{V}\}\)) :</p>
+    <div class="step">
+      <span class="eq">\(p(\overline{T}_2) = p(V)\cdot p(\overline{T}_2\mid V) + p(\overline{V})\cdot p(\overline{T}_2\mid\overline{V})\)</span>
+      <span class="eq ind">\(= 0{,}1\times 0{,}0025 + 0{,}9\times 0{,}9409\)</span>
+      <span class="eq ind">\(= 0{,}00025 + 0{,}84681\)</span>
+      <span class="eq ind">\(= 0{,}84706 = \dfrac{42353}{50000}\)</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">2b — Probabilité \(p(V\mid\overline{T}_2)\)</div>
+    <div class="step">
+      <span class="eq">\(p(V\cap\overline{T}_2) = p(V)\times p(\overline{T}_2\mid V)\)</span>
+      <span class="eq ind">\(= 0{,}1\times 0{,}0025\)</span>
+      <span class="eq ind">\(= 0{,}00025 = \dfrac{1}{4000}\)</span>
+    </div>
+    <div class="step">
+      <span class="eq">\(p(V\mid\overline{T}_2) = \dfrac{p(V\cap\overline{T}_2)}{p(\overline{T}_2)}\)</span>
+      <span class="eq ind">\(= \dfrac{0{,}00025}{0{,}84706}\)</span>
+      <span class="eq ind">\(= \dfrac{25}{84706} \approx 0{,}000295\)</span>
+    </div>
+    <div class="concl">Avec deux tests négatifs, \(p(\text{porteur})\approx 0{,}03\%\) — la double procédure est nettement plus fiable.</div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ══ EX2 ══ -->
+<div class="exo">
+  <div class="exo-h">Exercice 2 — Nombres complexes <span class="pts">/ 6 points</span></div>
+
+  <div class="sec">
+    <div class="sec-h">1) Résolution dans \(\mathbb{C}\)</div>
+    <p>Calcul du discriminant :</p>
+    <div class="step">
+      <span class="eq">\(\Delta = (8-6i)^2 - 16(1-5i)\)</span>
+      <span class="eq ind">\(= 64 - 96i + 36i^2 - 16 + 80i\)</span>
+      <span class="eq ind">\(= 64 - 96i - 36 - 16 + 80i\)</span>
+      <span class="eq ind">\(= 12 - 16i\)</span>
+    </div>
+    <p>On cherche \(\delta=a+bi\) tel que \(\delta^2 = 12-16i\) :</p>
+    <div class="step">
+      <span class="eq">\(\begin{cases}a^2-b^2=12\\2ab=-16\end{cases} \implies ab = -8\)</span>
+      <span class="eq">\((a^2+b^2)^2 = (a^2-b^2)^2 + 4a^2b^2 = 144+256 = 400\)</span>
+      <span class="eq">\(\implies a^2+b^2 = 20\)</span>
+      <span class="eq">\(\implies 2a^2 = 32 \implies a = \pm 4\)</span>
+      <span class="eq">\(a=4 \implies b=-2 \quad\therefore\quad \delta = 4-2i\)</span>
+    </div>
+    <p>Les deux solutions :</p>
+    <div class="step">
+      <span class="eq">\(z_1 = \dfrac{(8-6i)+(4-2i)}{8} = \dfrac{12-8i}{8} = \dfrac{3}{2}-i\)</span>
+    </div>
+    <div class="step">
+      <span class="eq">\(z_2 = \dfrac{(8-6i)-(4-2i)}{8} = \dfrac{4-4i}{8} = \dfrac{1}{2}-\dfrac{1}{2}i\)</span>
+    </div>
+    <div class="res">
+      <span class="eq">\(\boxed{S = \left\{\dfrac{1}{2}-\dfrac{1}{2}i \; ; \; \dfrac{3}{2}-i\right\}}\)</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">2) Étude géométrique</div>
+    <div class="data">Affixes : \(z_A=\tfrac{1}{2}-\tfrac{1}{2}i\), \(z_B=\tfrac{3}{2}-i\), \(z_C=i\), \(z_D=1-\tfrac{3}{2}i\) (unité : 2 cm)</div>
+    <p><strong>a)</strong> Coordonnées : \(A(\tfrac{1}{2};-\tfrac{1}{2})\), \(B(\tfrac{3}{2};-1)\), \(C(0;1)\), \(D(1;-\tfrac{3}{2})\)</p>
+    <p><strong>b)</strong> Calcul du rapport :</p>
+    <div class="step">
+      <span class="eq">\(z_D - z_A = \bigl(1-\tfrac{1}{2}\bigr) + i\bigl(-\tfrac{3}{2}+\tfrac{1}{2}\bigr) = \tfrac{1}{2} - i\)</span>
+    </div>
+    <div class="step">
+      <span class="eq">\(z_B - z_A = \bigl(\tfrac{3}{2}-\tfrac{1}{2}\bigr) + i\bigl(-1+\tfrac{1}{2}\bigr) = 1 - \tfrac{1}{2}i\)</span>
+    </div>
+    <div class="step">
+      <span class="eq">\(\dfrac{z_D-z_A}{z_B-z_A} = \dfrac{\frac{1}{2}-i}{1-\frac{1}{2}i} = \dfrac{(1-2i)(2+i)}{(2-i)(2+i)}\)</span>
+      <span class="eq ind">\(= \dfrac{2+i-4i-2i^2}{4+1} = \dfrac{4-3i}{5}\)</span>
+      <span class="eq ind">\(= \dfrac{4}{5} - \dfrac{3}{5}i\)</span>
+    </div>
+    <p>Module :</p>
+    <div class="step">
+      <span class="eq">\(\left|\dfrac{z_D-z_A}{z_B-z_A}\right| = \sqrt{\dfrac{16}{25}+\dfrac{9}{25}} = \sqrt{1} = 1\)</span>
+      <span class="eq">\(\implies AD = AB\)</span>
+    </div>
+    <p>Argument : \(\arg\!\left(\dfrac{z_D-z_A}{z_B-z_A}\right) = -\arctan\!\left(\dfrac{3}{4}\right)\)</p>
+    <div class="res">
+      <span class="eq">Le triangle \(ABD\) est <strong>isocèle en \(A\)</strong>.</span>
+      <span class="eq">\(\angle(\overrightarrow{AB},\overrightarrow{AD}) = -\arctan\!\left(\dfrac{3}{4}\right)\)</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">3) Suite géométrique \((a_n)\)</div>
+    <div class="data">\(z_0=2+i\) ; \(z_{n+1}=\bigl(\tfrac{1}{2}+\tfrac{1}{2}i\bigr)z_n+1-i\) ; \(a_n=z_n-2\)</div>
+    <div class="step">
+      <span class="eq">\(a_{n+1} = z_{n+1} - 2\)</span>
+      <span class="eq ind">\(= \bigl(\tfrac{1+i}{2}\bigr)z_n + 1 - i - 2\)</span>
+      <span class="eq ind">\(= \bigl(\tfrac{1+i}{2}\bigr)z_n - 1 - i\)</span>
+      <span class="eq ind">\(= \bigl(\tfrac{1+i}{2}\bigr)(z_n-2) + \bigl(\tfrac{1+i}{2}\bigr)\times 2 - 1 - i\)</span>
+      <span class="eq ind">\(= \bigl(\tfrac{1+i}{2}\bigr)a_n + \underbrace{1+i-1-i}_{=\,0}\)</span>
+      <span class="eq ind">\(= \bigl(\dfrac{1+i}{2}\bigr)a_n\)</span>
+    </div>
+    <div class="res">
+      <span class="eq">\((a_n)\) est géométrique de raison \(q=\dfrac{1+i}{2}\) et de premier terme \(a_0 = z_0-2 = i\).</span>
+      <span class="eq">\(|q|=\dfrac{\sqrt{2}}{2} < 1\) donc \((a_n)\to 0\) et \((z_n)\to 2\).</span>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ══ PROBLÈME ══ -->
+<div class="exo">
+  <div class="exo-h">Problème — Analyse <span class="pts">/ 10 points</span></div>
+  <div class="data">\(f(x)=\dfrac{1+e^x}{1+e^{2x}}\), définie sur \(\mathbb{R}\)</div>
+
+  <!-- A1 -->
+  <div class="sec">
+    <div class="sec-h">A.1 — Variations de \(f\)</div>
+    <p>La fonction \(f\) est dérivable sur \(\mathbb{R}\). Par la règle du quotient :</p>
+    <div class="step">
+      <span class="eq">\(f'(x) = \dfrac{e^x(1+e^{2x}) - (1+e^x)\cdot 2e^{2x}}{(1+e^{2x})^2}\)</span>
+      <span class="eq ind">\(= \dfrac{e^x + e^{3x} - 2e^{2x} - 2e^{3x}}{(1+e^{2x})^2}\)</span>
+      <span class="eq ind">\(= \dfrac{e^x(1 - 2e^x - e^{2x})}{(1+e^{2x})^2}\)</span>
+    </div>
+    <p>Signe de \(f'\) : le dénominateur est toujours \(>0\), et \(e^x>0\).<br>
+    Posons \(u=e^x>0\) : le numérateur s'annule quand \(-u^2-2u+1=0\), soit \(u=\sqrt{2}-1\).<br>
+    Donc \(x_0 = \ln(\sqrt{2}-1)\).</p>
+    <div class="vt-wrap">
+      <table class="vt">
+        <tr><th>\(x\)</th><th>\(-\infty\)</th><th></th><th>\(x_0\)</th><th></th><th>\(+\infty\)</th></tr>
+        <tr><td>\(f'(x)\)</td><td></td><td>\(+\)</td><td>\(0\)</td><td>\(-\)</td><td></td></tr>
+        <tr><td>\(f\)</td><td>\(1\)</td><td>\(\nearrow\)</td><td>\(\dfrac{1+\sqrt{2}}{2}\)</td><td>\(\searrow\)</td><td>\(0\)</td></tr>
+      </table>
+    </div>
+    <p>Limites : \(\lim_{x\to-\infty}f(x)=1\) et \(\lim_{x\to+\infty}f(x)=0\).</p>
+  </div>
+
+  <!-- A2 -->
+  <div class="sec">
+    <div class="sec-h">A.2 — Encadrement de \(f\)</div>
+    <p><strong>Positivité :</strong> \(1+e^x>0\) et \(1+e^{2x}>0\) donc \(f(x)>0\). ✓</p>
+    <p><strong>Maximum en \(x_0\)</strong> avec \(e^{x_0}=\sqrt{2}-1\) :</p>
+    <div class="step">
+      <span class="eq">\(f(x_0) = \dfrac{1+(\sqrt{2}-1)}{1+(\sqrt{2}-1)^2}\)</span>
+      <span class="eq ind">\(= \dfrac{\sqrt{2}}{1+(3-2\sqrt{2})}\)</span>
+      <span class="eq ind">\(= \dfrac{\sqrt{2}}{4-2\sqrt{2}}\)</span>
+      <span class="eq ind">\(= \dfrac{\sqrt{2}(2+\sqrt{2})}{(4-2\sqrt{2})(2+\sqrt{2})}\)</span>
+      <span class="eq ind">\(= \dfrac{2\sqrt{2}+2}{4}\)</span>
+      <span class="eq ind">\(= \dfrac{1+\sqrt{2}}{2}\)</span>
+    </div>
+    <div class="res">
+      <span class="eq">\(\boxed{0 < f(x) \leq \dfrac{1+\sqrt{2}}{2} \quad \forall x\in\mathbb{R}}\)</span>
+    </div>
+  </div>
+
+  <!-- A3 -->
+  <div class="sec">
+    <div class="sec-h">A.3 — Identité différentielle</div>
+    <p>On calcule \((1+e^{2x})f'(x)+(e^{2x}-1)f(x)\). En mettant au même dénominateur \(1+e^{2x}\) :</p>
+    <div class="step">
+      <span class="eq">\(\text{Numérateur} = e^x(1-2e^x-e^{2x}) + (e^{2x}-1)(1+e^x)\)</span>
+      <span class="eq ind">\(= e^x - 2e^{2x} - e^{3x} + e^{2x} - 1 + e^{3x} - e^x\)</span>
+      <span class="eq ind">\(= -e^{2x} - 1\)</span>
+      <span class="eq ind">\(= -(1+e^{2x})\)</span>
+    </div>
+    <div class="step">
+      <span class="eq">\(\therefore\quad (1+e^{2x})f'(x)+(e^{2x}-1)f(x) = \dfrac{-(1+e^{2x})}{1+e^{2x}} = \boxed{-1} \;\checkmark\)</span>
+    </div>
+  </div>
+
+  <!-- B1 -->
+  <div class="sec">
+    <div class="sec-h">B.1 — Expression de \(F(x)\)</div>
+    <p>On décompose l'intégrande :</p>
+    <div class="step">
+      <span class="eq">\(\dfrac{1+e^t}{1+e^{2t}} = \dfrac{e^t}{1+e^{2t}} + \dfrac{1}{1+e^{2t}}\)</span>
+    </div>
+    <p><strong>Premier terme</strong> — changement de variable \(u=e^t\), \(du=e^t\,dt\) :</p>
+    <div class="step">
+      <span class="eq">\(\displaystyle\int_0^x \dfrac{e^t}{1+e^{2t}}\,dt = \int_1^{e^x}\dfrac{du}{1+u^2}\)</span>
+      <span class="eq ind">\(= \arctan(e^x) - \dfrac{\pi}{4}\)</span>
+    </div>
+    <p><strong>Second terme</strong> — on écrit \(\dfrac{1}{1+e^{2t}} = 1 - \dfrac{e^{2t}}{1+e^{2t}}\) :</p>
+    <div class="step">
+      <span class="eq">\(\displaystyle\int_0^x \dfrac{dt}{1+e^{2t}} = \int_0^x\!\left(1 - \dfrac{e^{2t}}{1+e^{2t}}\right)dt\)</span>
+      <span class="eq ind">\(= x - \dfrac{1}{2}\ln(1+e^{2x}) + \dfrac{1}{2}\ln 2\)</span>
+    </div>
+    <p>En sommant les deux termes et en regroupant les logarithmes :</p>
+    <div class="step">
+      <span class="eq">\(F(x) = \arctan(e^x) - \dfrac{\pi}{4} + x - \dfrac{1}{2}\ln(1+e^{2x}) + \dfrac{1}{2}\ln 2\)</span>
+    </div>
+    <div class="res">
+      <span class="eq">\(\boxed{F(x) = \displaystyle\int_1^{e^x}\!\dfrac{du}{1+u^2} + \ln\!\left(\dfrac{\sqrt{2}\,e^x}{\sqrt{1+e^{2x}}}\right)}\)</span>
+    </div>
+  </div>
+
+  <!-- B2 -->
+  <div class="sec">
+    <div class="sec-h">B.2 — Montrer que \(\phi(x)=x\)</div>
+    <div class="step">
+      <span class="eq">\(\phi(x) = \displaystyle\int_0^{\tan x}\!\dfrac{dt}{1+t^2}\)</span>
+      <span class="eq ind">\(= \Bigl[\arctan t\Bigr]_0^{\tan x}\)</span>
+      <span class="eq ind">\(= \arctan(\tan x) - \arctan(0)\)</span>
+      <span class="eq ind">\(= x - 0 = x \quad\checkmark\)</span>
+    </div>
+    <p>valable pour \(x\in\left]-\dfrac{\pi}{2};\dfrac{\pi}{2}\right[\) car \(\arctan\circ\tan = \text{id}\) sur cet intervalle.</p>
+  </div>
+
+  <!-- B3 -->
+  <div class="sec">
+    <div class="sec-h">B.3 — Calcul de \(I\)</div>
+    <p>On applique la formule de B.1 en \(x=\dfrac{\ln 3}{2}\), soit \(e^x = e^{\frac{\ln 3}{2}} = \sqrt{3}\) :</p>
+    <div class="step">
+      <span class="eq">\(I = F\!\left(\dfrac{\ln 3}{2}\right)\)</span>
+      <span class="eq ind">\(= \arctan(\sqrt{3}) - \dfrac{\pi}{4} + \dfrac{\ln 3}{2} - \dfrac{1}{2}\ln(1+3) + \dfrac{1}{2}\ln 2\)</span>
+      <span class="eq ind">\(= \dfrac{\pi}{3} - \dfrac{\pi}{4} + \dfrac{\ln 3}{2} - \dfrac{\ln 4}{2} + \dfrac{\ln 2}{2}\)</span>
+      <span class="eq ind">\(= \dfrac{\pi}{12} + \dfrac{\ln 3}{2} - \dfrac{2\ln 2}{2} + \dfrac{\ln 2}{2}\)</span>
+      <span class="eq ind">\(= \dfrac{\pi}{12} + \dfrac{\ln 3}{2} - \dfrac{\ln 2}{2}\)</span>
+    </div>
+    <div class="res">
+      <span class="eq">\(\boxed{I = \dfrac{\pi}{12} + \dfrac{1}{2}\ln\!\left(\dfrac{3}{2}\right)}\)</span>
+    </div>
+    <p><strong>Interprétation géométrique :</strong> \(I\) représente l'aire du domaine délimité par la courbe \(\mathcal{C}_f\), l'axe \((Ox)\) et les droites \(x=0\) et \(x=\dfrac{\ln 3}{2}\).</p>
+  </div>
+
+  <!-- C1a -->
+  <div class="sec">
+    <div class="sec-h">C.1.a — Trouver \(a\) et \(b\)</div>
+    <div class="step">
+      <span class="eq">\(\dfrac{a(1+e^{2t}) + b\,e^{2t}}{1+e^{2t}} = \dfrac{1}{1+e^{2t}}\)</span>
+      <span class="eq">\(\implies a + (a+b)e^{2t} = 1\) pour tout \(t\)</span>
+      <span class="eq">\(\implies a = 1 \quad\text{et}\quad a+b = 0 \implies b = -1\)</span>
+    </div>
+    <div class="res"><span class="eq">\(\boxed{a=1, \quad b=-1}\)</span></div>
+    <p>On en déduit :</p>
+    <div class="step">
+      <span class="eq">\(\displaystyle\int_0^{\frac{\ln 3}{2}}\!\dfrac{dt}{1+e^{2t}} = \left[t - \dfrac{1}{2}\ln(1+e^{2t})\right]_0^{\frac{\ln 3}{2}}\)</span>
+      <span class="eq ind">\(= \dfrac{\ln 3}{2} - \dfrac{1}{2}\ln(1+3) - \left(0 - \dfrac{1}{2}\ln 2\right)\)</span>
+      <span class="eq ind">\(= \dfrac{\ln 3}{2} - \dfrac{\ln 4}{2} + \dfrac{\ln 2}{2}\)</span>
+      <span class="eq ind">\(= \dfrac{\ln 3}{2} - \dfrac{2\ln 2}{2} + \dfrac{\ln 2}{2}\)</span>
+      <span class="eq ind">\(= \dfrac{\ln 3}{2} - \dfrac{\ln 2}{2}\)</span>
+      <span class="eq ind">\(= \dfrac{1}{2}\ln\!\left(\dfrac{3}{2}\right)\)</span>
+    </div>
+  </div>
+
+  <!-- C1b -->
+  <div class="sec">
+    <div class="sec-h">C.1.b — Relation sur \(f'\)</div>
+    <p>D'après A.3 : \((1+e^{2t})f'(t) = -1 - (e^{2t}-1)f(t)\), donc :</p>
+    <div class="step">
+      <span class="eq">\(f'(t) = \dfrac{-1 - (e^{2t}-1)f(t)}{1+e^{2t}}\)</span>
+      <span class="eq ind">\(= \dfrac{-1}{1+e^{2t}} - \dfrac{e^{2t}-1}{1+e^{2t}}\cdot f(t)\)</span>
+    </div>
+    <p>Or \(\dfrac{e^{2t}-1}{1+e^{2t}} = 1 - \dfrac{2}{1+e^{2t}}\), d'où :</p>
+    <div class="step">
+      <span class="eq">\(f'(t) = \dfrac{-1}{1+e^{2t}} - \left(1 - \dfrac{2}{1+e^{2t}}\right)f(t)\)</span>
+    </div>
+    <div class="res">
+      <span class="eq">\(\boxed{f'(t) = \dfrac{-1}{1+e^{2t}} - f(t) + \dfrac{2f(t)}{1+e^{2t}}} \;\checkmark\)</span>
+    </div>
+  </div>
+
+  <!-- C2 -->
+  <div class="sec">
+    <div class="sec-h">C.2 — Valeur de \(J\)</div>
+    <p>On remarque que \(\dfrac{2f(t)}{1+e^{2t}} = \dfrac{2(1+e^t)}{(1+e^{2t})^2}\), donc :</p>
+    <div class="step">
+      <span class="eq">\(\displaystyle\int_0^{\frac{\ln 3}{2}}\!\dfrac{2f(t)}{1+e^{2t}}\,dt = 2J\)</span>
+    </div>
+    <p>On intègre la relation de C.1.b entre \(0\) et \(\dfrac{\ln 3}{2}\) :</p>
+    <div class="step">
+      <span class="eq">\(\Bigl[f(t)\Bigr]_0^{\frac{\ln 3}{2}} = -\displaystyle\int_0^{\frac{\ln 3}{2}}\!\dfrac{dt}{1+e^{2t}} - \int_0^{\frac{\ln 3}{2}}\!f(t)\,dt + 2J\)</span>
+      <span class="eq ind">\(= -\dfrac{1}{2}\ln\!\left(\dfrac{3}{2}\right) - I + 2J\)</span>
+    </div>
+    <p>Calcul des valeurs aux bornes :</p>
+    <div class="step">
+      <span class="eq">\(f\!\left(\dfrac{\ln 3}{2}\right) = \dfrac{1+e^{\frac{\ln 3}{2}}}{1+e^{\ln 3}} = \dfrac{1+\sqrt{3}}{1+3} = \dfrac{1+\sqrt{3}}{4}\)</span>
+    </div>
+    <div class="step">
+      <span class="eq">\(f(0) = \dfrac{1+1}{1+1} = 1\)</span>
+    </div>
+    <div class="step">
+      <span class="eq">\(\Bigl[f(t)\Bigr]_0^{\frac{\ln 3}{2}} = \dfrac{1+\sqrt{3}}{4} - 1 = \dfrac{\sqrt{3}-3}{4}\)</span>
+    </div>
+    <p>On substitue \(I = \dfrac{\pi}{12}+\dfrac{1}{2}\ln\!\left(\dfrac{3}{2}\right)\) :</p>
+    <div class="step">
+      <span class="eq">\(\dfrac{\sqrt{3}-3}{4} = -\dfrac{1}{2}\ln\!\left(\dfrac{3}{2}\right) - \dfrac{\pi}{12} - \dfrac{1}{2}\ln\!\left(\dfrac{3}{2}\right) + 2J\)</span>
+      <span class="eq ind">\(= -\dfrac{\pi}{12} - \ln\!\left(\dfrac{3}{2}\right) + 2J\)</span>
+    </div>
+    <div class="step">
+      <span class="eq">\(2J = \dfrac{\sqrt{3}-3}{4} + \dfrac{\pi}{12} + \ln\!\left(\dfrac{3}{2}\right)\)</span>
+    </div>
+    <div class="res">
+      <span class="eq">\(\boxed{J = \dfrac{\sqrt{3}-3}{8} + \dfrac{\pi}{24} + \dfrac{1}{2}\ln\!\left(\dfrac{3}{2}\right)}\)</span>
+    </div>
+  </div>
+
+</div><!-- /exo -->
+</div><!-- /body -->
+<div class="ftr">Corrigé officiel — ENSA Thiès · Concours d'entrée · Session Normale, Mai 2022</div>
+</div></div><!-- /paper /page -->
+
+<script>
+function sw(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.renderMathInElement){
+    renderMathInElement(document.getElementById('pg-'+id),{
+      delimiters:[{left:'\\(',right:'\\)',display:false}],
+      throwOnError:false
+    });
+  }
+}
+</script>
+</body>
+</html>
